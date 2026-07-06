@@ -5,6 +5,7 @@
 # Explicitly tracked root files
 !/CLAUDE.md
 !/.gitignore
+!/deploy-ftp.sh
 
 # Custom code lives under wp-content
 !/wp-content
