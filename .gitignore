@@ -1,0 +1,24 @@
+# Default-deny: this repo only tracks the site's custom code, not WordPress
+# core, vendored plugins/themes, uploads, backups, or local secrets.
+/*
+
+# Explicitly tracked root files
+!/CLAUDE.md
+!/.gitignore
+
+# Custom code lives under wp-content
+!/wp-content
+/wp-content/*
+
+!/wp-content/themes
+/wp-content/themes/*
+!/wp-content/themes/hello-elementor-talia
+
+!/wp-content/plugins
+/wp-content/plugins/*
+!/wp-content/plugins/custom-mailerlite-integration
+
+# Never track secrets, even if scope changes later
+wp-config.php
+*.env
+.env.*
