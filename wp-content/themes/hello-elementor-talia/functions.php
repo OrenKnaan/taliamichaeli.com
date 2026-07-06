@@ -1122,11 +1122,19 @@ function taliamichaeli_gdpr_consent_banner() {
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             var banner = document.getElementById('gdpr-banner');
+
+            // הדף מוגש לעיתים משכבת קאש שלא מתחשבת בעוגיות (x-cacheable: Forced),
+            // כך שהבאנר עלול להופיע גם למי שכבר נתן הסכמה. נסתיר אותו מיידית בצד הלקוח.
+            if (document.cookie.indexOf('gdpr_consent=true') !== -1) {
+                banner.classList.add('gdpr-hidden');
+                return;
+            }
+
             var acceptAllBtn = document.getElementById('accept-all');
             var acceptEssentialBtn = document.getElementById('accept-essential');
             var readMoreLink = document.getElementById('read-more-link');
             var accordion = document.getElementById('gdpr-accordion');
-            
+
             // פונקציה לפתיחה/סגירה של האקורדיון
             readMoreLink.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1149,12 +1157,15 @@ function taliamichaeli_gdpr_consent_banner() {
             }
             
             // פונקציה להסתרת הבאנר
+            // הערה: בעבר בוצע כאן window.location.reload() אחרי ההסתרה, כדי לגרום
+            // לטעינה/אי-טעינה של סקריפטי המעקב. אבל כשהדף מוגש מקאש (ר' לעיל),
+            // הרענון פשוט טוען מחדש את אותו HTML שהיה בקאש - עם הבאנר בחזרה - ולכן
+            // נראה כאילו הלחיצה "לא עובדת". ההסתרה כאן היא אך ורק בצד הלקוח,
+            // וסקריפטי המעקב ייטענו/לא ייטענו לפי העוגייה בטעינת העמוד הבאה.
             function hideBanner() {
                 banner.style.animation = 'slideDown 0.3s ease-out';
                 setTimeout(function() {
                     banner.classList.add('gdpr-hidden');
-                    // רענן את הדף כדי לטעון/לא לטעון סקריפטים
-                    window.location.reload();
                 }, 300);
             }
             
